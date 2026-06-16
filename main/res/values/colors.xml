@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="bg_primary">#F8F9FA</color>
+    <color name="bg_card">#FFFFFF</color>
+    <color name="bg_warning">#FFF3E0</color>
+    <color name="bg_danger">#FFEBEE</color>
+    <color name="bg_success">#E8F5E9</color>
+    <color name="accent_blue">#1F3864</color>
+    <color name="accent_green">#2E7D32</color>
+    <color name="accent_red">#C62828</color>
+    <color name="accent_orange">#E65100</color>
+    <color name="text_primary">#1A1A2E</color>
+    <color name="text_secondary">#595959</color>
+    <color name="btn_delivery">#43A047</color>
+    <color name="btn_acquaintance">#1E88E5</color>
+    <color name="btn_suspicious">#E53935</color>
+    <color name="call_green">#2E7D32</color>
+    <color name="status_bar">#1A1A2E</color>
+</resources>
