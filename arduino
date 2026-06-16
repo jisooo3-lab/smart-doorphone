@@ -1,0 +1,57 @@
+// 핀 설정
+const int buttonPin = 5;      // 초인종 버튼
+const int pirPin = 2;         // PIR 센서
+const int trigPin = 3;        // 초음파 Trig
+const int echoPin = 4;        // 초음파 Echo
+
+// 상태 변수
+bool lastButtonState = HIGH;
+int checkCount = 0;
+const int targetCount = 6;    // 약 3초 지속
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(buttonPin, INPUT_PULLUP);
+  pinMode(pirPin, INPUT);
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  
+  Serial.println("--- [통합 시스템] 스마트 도어폰 가동 중 ---");
+}
+
+void loop() {
+  // 1. 버튼(초인종) 로직
+  int currentButtonState = digitalRead(buttonPin);
+  if (lastButtonState == HIGH && currentButtonState == LOW) {
+    delay(50);
+    if (digitalRead(buttonPin) == LOW) {
+      Serial.println("CAMERA_ON"); // 파이썬이 인식할 신호
+      delay(5000); // 5초 중복 방지
+    }
+  }
+  lastButtonState = currentButtonState;
+
+  // 2. 서성거림 감지 로직
+  int isMoving = digitalRead(pirPin);
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  long duration = pulseIn(echoPin, HIGH, 30000); // 타임아웃 추가
+  long distance = (duration * 0.034 / 2);
+  if (distance <= 0 || distance > 400) distance = 999;
+
+  if (isMoving == HIGH && distance <= 100) {
+    checkCount++;
+    if (checkCount >= targetCount) {
+      Serial.println("DETECTED"); // 파이썬이 인식할 신호
+      checkCount = 0;
+      delay(7000); // 파이썬이 처리할 시간 확보
+    }
+  } else {
+    checkCount = 0;
+  }
+
+  delay(500); // 전체 루프 주기
+}
